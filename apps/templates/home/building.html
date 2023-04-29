@@ -1,0 +1,235 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Building {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <div class="min-height-300 bg-primary position-absolute w-100"></div>
+    
+  {% include "includes/sidenav.html" %}
+
+  <main class="main-content position-relative border-radius-lg ">
+
+    {% include "includes/navigation.html" %}
+
+    <div class="container-fluid py-4">
+
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Platinum</p>
+                    <h5 class="font-weight-bolder">
+                      53
+                    </h5>
+                    <p class="mb-0">
+                      >80 points
+                   </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Gold</p>
+                    <h5 class="font-weight-bolder">
+                      23
+                    </h5>
+                    <p class="mb-0">
+                      60 - 79 points
+                   </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
+                    <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Silver</p>
+                    <h5 class="font-weight-bolder">
+                      34
+                    </h5>
+                    <p class="mb-0">
+                      50 - 59 points
+                   </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Certified</p>
+                    <h5 class="font-weight-bolder">
+                      10
+                    </h5>
+                    <p class="mb-0">
+                       40 - 49 points
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                    <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <select class="form-control" id="zone-filter">
+                  <option value="">All</option>
+                  <option value="1">Zone 1</option>
+                  <option value="2">Zone 2</option>
+                  <option value="3">Zone 3</option>
+                </select>
+              </div>
+              
+            </div>
+          </div>
+          <div class="row" id="cardContainer">
+            <!-- Cards will be dynamically generated here -->
+          </div>
+        </div>
+        
+        
+    </div>
+
+
+        <!-- Add a container for the cards -->
+        <div class="card-container row mt-4" id="card-container"></div>
+
+      </div>
+
+
+
+      {% include "includes/footer.html" %}
+
+    </div>
+  
+  </main>  
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  
+  <script src="{{ config.ASSETS_ROOT }}/js/plugins/chartjs.min.js"></script>
+ 
+
+<script>
+  const cardData = [
+  { zone: '1', title: 'Labtek V', location: 'Platinum', emission: 220, electricity: 100, water: 89, image: 'labtekv.jpeg' },  
+  { zone: '2', title: 'Labtek VI', location: 'Platinum', emission: 220, electricity: 100, water: 89, image: 'labtekvi.jpeg' },  
+  { zone: '1', title: 'Labtek VII', location: 'Gold', emission: 180, electricity: 80, water: 72, image: 'labtekvii.jpeg' },  
+  { zone: '3', title: 'Labtek VIII', location: 'Gold', emission: 180, electricity: 80, water: 72, image: 'labtekviii.jpeg' }
+  ];
+
+  function generateCards(selectedZone) {
+    const cardContainer = document.getElementById('cardContainer');
+    cardContainer.innerHTML = '';
+    const filteredCards = selectedZone ? cardData.filter(card => card.zone === selectedZone) : cardData;
+    filteredCards.forEach(card => {
+      const cardHtml = `
+      <div class="col-md-6 mt-4">
+        <div class="card card-profile">
+          <img src="{{ config.ASSETS_ROOT }}/img/itb/${card.image}" alt="Image placeholder" class="card-img-top" style="object-fit: cover; height: 200px;">
+          <div class="row justify-content-center">
+            <div class="col-4 col-lg-4 order-lg-2">
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <h5>${card.title}</h5>
+            <div class="h6 font-weight-300">
+              <i class="ni location_pin mr-2"></i>${card.location}
+            </div>
+            <div class="h6 mt-2">
+              <i class="ni business_briefcase-24 mr-2"></i>Zone ${card.zone}
+            </div>
+          </div>
+          <div class="card-body pt-0">
+            <div class="row">
+              <div class="col">
+                <div class="d-flex justify-content-center">
+                  <div class="d-grid text-center">
+                    <span class="text-lg font-weight-bolder">${card.emission}</span>
+                    <span class="text-sm opacity-8">CO2e</span>
+                  </div>
+                  <div class="d-grid text-center mx-4">
+                    <span class="text-lg font-weight-bolder">${card.electricity}</span>
+                    <span class="text-sm opacity-8">KwH</span>
+                  </div>
+                  <div class="d-grid text-center">
+                    <span class="text-lg font-weight-bolder">${card.water}</span>
+                    <span class="text-sm opacity-8">ltr</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      `;
+      cardContainer.insertAdjacentHTML('beforeend', cardHtml);
+    });
+  }
+
+  const electricityFilter = document.getElementById('zone-filter');
+  electricityFilter.addEventListener('change', (event) => {
+    const selectedZone = event.target.value;
+    generateCards(selectedZone);
+  });
+
+  generateCards(); // Call the function initially to show all cards
+
+
+</script>
+
+
+
+{% endblock javascripts %}
