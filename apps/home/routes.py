@@ -7,17 +7,23 @@ from apps.home import blueprint
 from flask import render_template, request
 from flask_login import login_required
 from jinja2 import TemplateNotFound
-from .electricity import get_predicted_kwh
+from .electricity import get_predicted_kwh, get_actual_kwh, get_predicted_cf, get_actual_cf, get_actual_liter, get_predicted_liter
 from flask import jsonify
 
 """
 add predicted_kwh from electricity.py to the render_template so it can be used in building-data.html
 """
-@blueprint.route('/building-data')
+
+@blueprint.route('/building-data/<building>')
 @login_required
-def building_data():
-    predicted_kwh = get_predicted_kwh()
-    return jsonify(predicted_kwh)
+def building_data(building):
+    predicted_kwh = get_predicted_kwh(building)
+    actual_kwh = get_actual_kwh(building)
+    predicted_liter = get_predicted_liter(building)
+    actual_liter = get_actual_liter(building)
+    predicted_cf = get_predicted_cf(building)
+    actual_cf = get_actual_cf(building)
+    return jsonify(predicted_kwh=predicted_kwh, actual_kwh=actual_kwh, predicted_liter=predicted_liter, actual_liter=actual_liter, predicted_cf=predicted_cf, actual_cf=actual_cf)
 
 
 
