@@ -9,6 +9,7 @@ from flask_login import login_required
 from jinja2 import TemplateNotFound
 from .electricity import get_predicted_kwh, get_actual_kwh, get_predicted_cf, get_actual_cf, get_actual_liter, get_predicted_liter
 from flask import jsonify
+from .asset import *
 
 """
 add predicted_kwh from electricity.py to the render_template so it can be used in building-data.html
@@ -25,7 +26,41 @@ def building_data(building):
     actual_cf = get_actual_cf(building)
     return jsonify(predicted_kwh=predicted_kwh, actual_kwh=actual_kwh, predicted_liter=predicted_liter, actual_liter=actual_liter, predicted_cf=predicted_cf, actual_cf=actual_cf)
 
+@blueprint.route('/category_data/<category>')
+@login_required
+def category_data(category):
+    category_details = get_category_details(category)
+    return jsonify(category_details=category_details)
 
+@blueprint.route('/tabel_form/<year>/<category>')
+@login_required
+def table_form(year, category):
+    tabel_form_predicted = get_tabel_form_predicted(year, category)
+    return jsonify(tabel_form_predicted=tabel_form_predicted)
+
+@blueprint.route('/asset_data_pie/<category>/<target>')
+@login_required
+def category_data_pie(category, target):
+    subcategory_array, target_array = pie_get_category(category, target)
+    return jsonify(subcategory_array=subcategory_array, target_array=target_array)
+
+@blueprint.route('/asset_data_pie_predicted/<year>/<category>/<target>')
+@login_required
+def category_data_pie_predicted(year, category, target):
+    subcategory_array, target_array = pie_get_category_predicted(year, category, target)
+    return jsonify(subcategory_array=subcategory_array, target_array=target_array)
+
+@blueprint.route('/asset')
+@login_required
+def asset():
+    counts = stacked_count_category()
+    return jsonify(counts)
+
+
+@blueprint.route('/donut-data')
+def pie_data():
+    data = pie_count_category()
+    return jsonify(data)
 
 @blueprint.route('/index')
 @login_required

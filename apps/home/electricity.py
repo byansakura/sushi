@@ -7,7 +7,7 @@ import os
 
 def get_predicted_kwh(building):
     # load the data
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "electricity_kwh.csv"))
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "electricity.csv"))
     df = pd.read_csv(file_path)
     # Convert 'Date' column to datetime format
     df['Date'] = pd.to_datetime(df['Date'], format="%m-%d-%Y")
@@ -54,7 +54,7 @@ def get_predicted_kwh(building):
 
 def get_actual_kwh(building):
     # load the data
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "electricity_kwh.csv"))
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "electricity.csv"))
     df = pd.read_csv(file_path)
     # Convert 'Date' column to datetime format
     df['Date'] = pd.to_datetime(df['Date'], format="%m-%d-%Y")
@@ -82,7 +82,7 @@ def get_actual_kwh(building):
 
 def get_predicted_liter(building):
     # load the data
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "water_liter.csv"))
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "water.csv"))
     df = pd.read_csv(file_path)
     # Convert 'Date' column to datetime format
     df['Date'] = pd.to_datetime(df['Date'], format="%m-%d-%Y")
@@ -129,7 +129,7 @@ def get_predicted_liter(building):
 
 def get_actual_liter(building):
     # load the data
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "water_liter.csv"))
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "water.csv"))
     df = pd.read_csv(file_path)
     # Convert 'Date' column to datetime format
     df['Date'] = pd.to_datetime(df['Date'], format="%m-%d-%Y")
@@ -157,7 +157,7 @@ def get_actual_liter(building):
 
 def get_predicted_cf(building):
     # load the data
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "carbon_footprint.csv"))
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "cf.csv"))
     df = pd.read_csv(file_path)
     # Convert 'Date' column to datetime format
     df['Date'] = pd.to_datetime(df['Date'], format="%m-%d-%Y")
@@ -204,7 +204,7 @@ def get_predicted_cf(building):
 
 def get_actual_cf(building):
     # load the data
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "electricity_kwh.csv"))
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "cf.csv"))
     df = pd.read_csv(file_path)
     # Convert 'Date' column to datetime format
     df['Date'] = pd.to_datetime(df['Date'], format="%m-%d-%Y")

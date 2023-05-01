@@ -15,4 +15,6 @@ Flask-Minify==0.37
 pandas
 statsmodels
 matplotlib
+scikit-learn
+openpyxl
 #flask_mysqldb
