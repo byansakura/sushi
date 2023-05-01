@@ -222,9 +222,9 @@ def initiatives(year, category):
     if (energy >= treshold_energy) or (cost >= treshold_cost) or (carbon >= treshold_carbons):
         procured = unit - units
         percentage = (procured/unit)*100
-        print(f"You should start limiting your use of {category}")
-        print(f"Maximum Number of Procurement {category} Assets in {year}: {treshold_units}")
-        print(f"Predicted Reduction Number Procurement {category} Assets in {year}: {procured}")
-        print(f"Predicted Reduction Percentation Number Procurement {category} Assets in {year}: {percentage}%")
+        return f"You should start limiting your use of {category}\n" \
+               f"Maximum Number of Procurement {category} Assets in {year}: {treshold_units}\n" \
+               f"Predicted Reduction Number Procurement {category} Assets in {year}: {procured}\n" \
+               f"Predicted Reduction Percentation Number Procurement {category} Assets in {year}: {percentage}%"
     else:
-        print(f"The {year} prediction is all good. However, you could also reuse and recycle your IT Asset on {category} to support sustainability.")
+        return f"The {year} prediction is all good. However, you could also reuse and recycle your IT Asset on {category} to support sustainability." 

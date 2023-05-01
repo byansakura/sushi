@@ -38,6 +38,12 @@ def table_form(year, category):
     tabel_form_predicted = get_tabel_form_predicted(year, category)
     return jsonify(tabel_form_predicted=tabel_form_predicted)
 
+@blueprint.route('/init/<year>/<category>')
+@login_required
+def init_future(year, category):
+    initiative = initiatives(year, category)
+    return jsonify(initiative=initiative)
+
 @blueprint.route('/asset_data_pie/<category>/<target>')
 @login_required
 def category_data_pie(category, target):

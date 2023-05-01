@@ -137,7 +137,7 @@
               <h6 class="text-capitalize">Initiative</h6>
             </div>
             <div class="card-body">
-              <p class="p-3 d-flex align-items-center"> Sabalabala</p>
+              <p id="initiative" class="p-3 d-flex align-items-center"></p>
             </div>
           </div>
         </div>
@@ -292,7 +292,7 @@ $(document).ready(function() {
 
         // Fetch data for the pie chart
                 // Fetch data for the pie chart
-                fetch("/asset_data_pie_predicted/" +year +"/" + category + "/Carbon")
+        fetch("/asset_data_pie_predicted/" +year +"/" + category + "/Carbon")
           .then(response => response.json())
           .then(data => {
             // Update the data and options of the pie chart with the new data
@@ -322,6 +322,9 @@ $(document).ready(function() {
             pieChartEnergy.update();
           })
           .catch(error => console.log(error));
+          fetch("/init/"+year +"/" + category)
+          .then(response => response.json())
+          .then(data => initiativeElem.innerText = data.initiative);
       })
       .catch(error => console.log(error));
   });
