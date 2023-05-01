@@ -12,10 +12,7 @@
 
 > 👉 **Step 1** - Download the code from the GH repository (using `GIT`) 
 
-```bash
-$ git clone https://github.com/app-generator/flask-argon-dashboard.git
-$ cd flask-argon-dashboard
-```
+
 
 <br />
 
