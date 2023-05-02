@@ -200,31 +200,32 @@ def pie_get_category_predicted(year, category, target):
     return (subcategory_array, target_array)
 
 def initiatives(year, category):
+    year = int(year)
     prev = year - 1
     a, prev_energies = pie_get_category_predicted(prev, category, "Energy")
     b, prev_costs = pie_get_category_predicted(prev, category, "Cost")
     c, prev_carbons = pie_get_category_predicted(prev, category, "Carbon")
     g, prev_units = pie_get_category_predicted(prev, category, "Unit")
-    treshold_energy = np.sum(prev_energies)
-    treshold_cost = np.sum(prev_costs)
-    treshold_carbons = np.sum(prev_carbons)
-    treshold_units = np.sum(prev_units)
+    treshold_energy = sum(prev_energies.values())
+    treshold_cost = sum(prev_costs.values())
+    treshold_carbons = sum(prev_carbons.values())
+    treshold_units = sum(prev_units.values())
 
     d, energies = pie_get_category_predicted(year, category, "Energy")
     e, costs = pie_get_category_predicted(year, category, "Cost")
     f, carbons = pie_get_category_predicted(year, category, "Carbon")
     h, units = pie_get_category_predicted(year, category, "Unit")
-    energy = np.sum(energies)
-    cost = np.sum(costs)
-    carbon = np.sum(carbons)
-    unit = np.sum(units)
+    energy = sum(energies.values())
+    cost = sum(costs.values())
+    carbon = sum(carbons.values())
+    unit = sum(units.values())
 
     if (energy >= treshold_energy) or (cost >= treshold_cost) or (carbon >= treshold_carbons):
-        procured = unit - units
+        procured = unit - treshold_units
         percentage = (procured/unit)*100
         return f"You should start limiting your use of {category}\n" \
                f"Maximum Number of Procurement {category} Assets in {year}: {treshold_units}\n" \
                f"Predicted Reduction Number Procurement {category} Assets in {year}: {procured}\n" \
                f"Predicted Reduction Percentation Number Procurement {category} Assets in {year}: {percentage}%"
     else:
-        return f"The {year} prediction is all good. However, you could also reuse and recycle your IT Asset on {category} to support sustainability." 
+        return f"The {year} prediction is all good. However, you could also reuse and recycle your IT Asset on {category} to support sustainability."
