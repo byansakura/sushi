@@ -56,6 +56,7 @@ def get_actual_kwh(building):
     # load the data
     file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "electricity.csv"))
     df = pd.read_csv(file_path)
+    
     # Convert 'Date' column to datetime format
     df['Date'] = pd.to_datetime(df['Date'], format="%m-%d-%Y")
 
