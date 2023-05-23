@@ -3,6 +3,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.ensemble import RandomForestRegressor
+from statsmodels.tsa.arima.model import ARIMA
+from matplotlib import pyplot
+from sklearn.tree import DecisionTreeRegressor
 import os
 # Converting IT Asset Subcategory
 # The input of the function is from the drop down button on the website
@@ -51,30 +54,49 @@ def get_encoded_subcategory (subcategory):
 
 # For single use
 def get_predicted_unit(year, subcategory):
-  df_subcategory = df[df["IT Asset Subcategory"] == subcategory]
-  X = df_subcategory['Tahun Perolehan']
-  y = df_subcategory['Jumlah Unit']
-  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-  f = np.polyfit(X_train, y_train, 2)
-  p = np.poly1d(f)
-  z = np.array(year)
-  return(round(p(z)))
+  series = df
+  series = series[series["IT Asset Subcategory"] == subcategory][['Tahun Perolehan', 'Jumlah Unit']].sort_values('Tahun Perolehan')
+  series.set_index('Tahun Perolehan', inplace=True)
+
+  X = series.values
+  size = int(len(X) * 0.8)
+  train, test = X[0:size], X[size:len(X)]
+  history = [x for x in train]
+  predictions = list()
+  start = 2022
+  looping_year = year - start
+
+  for t in range(len(test) + looping_year):
+    model = ARIMA(history, order=(5,1,0))
+    model_fit = model.fit()
+    output = model_fit.forecast()
+    yhat = output[0]
+    predictions.append(yhat)
+    if t >= len(test):
+      obs = np.array([yhat])
+    else:
+      obs = test[t]
+    history.append(obs)
+    start += 1
+  
+  return(round(yhat))
 
 def get_predicted_energy(units, subcategory, target):
-  df_subcategory = df[df["IT Asset Subcategory"] == subcategory]
-  X = df_subcategory['Jumlah Unit']
-  y = df_subcategory[target]
+  X = df[['Jumlah Unit', 'IT Asset Subcategory']]
+  y = df[target]
   X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-  f = np.polyfit(X_train, y_train, 2)
-  p = np.poly1d(f)
-  z = np.array(units)
-  return (p(z))
+  dtr = DecisionTreeRegressor(random_state=42)
+  dtr.fit(X_train, y_train)
+  return (round(dtr.predict([[units, subcategory]])))
 
 file_path_carbon = os.path.abspath(os.path.join(os.path.dirname(__file__), "df_carbon.xlsx"))
 file_path_agg = os.path.abspath(os.path.join(os.path.dirname(__file__), "df_agg.xlsx"))
 
 df = pd.read_excel(file_path_carbon)
 df1 = pd.read_excel(file_path_agg)
+
+# df = pd.read_excel("df_carbon.xlsx")
+# df1 = pd.read_excel("df_agg.xlsx")
 # unit_model = pickle.load(open(("jumlah_unit"), 'rb'))
 # energy_model = pickle.load(open(("energy"), 'rb'))
 server = ['In-house servers not cooled',
